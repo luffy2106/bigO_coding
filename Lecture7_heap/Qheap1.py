@@ -24,6 +24,10 @@ def find_index_delete(h, v):
     return i
 
 
+def index_parent(i):
+    return int((i - 1) / 2)
+
+
 N = int(input())
 h = []  # our heap
 out = []
@@ -36,12 +40,21 @@ for i in range(N):
         continue
     elif (
         operation[0] == 2
-    ):  # Find the index of deleted number => gan phan tu tai vi tri do la -infinitive => chuan hoa heap => delete phan tu khoi top
+    ):  # Find the index of deleted number => gan phan tu tai vi tri do la -infinitive => day phan tu do dan len top => delete phan tu khoi top
         index_delete = find_index_delete(h, operation[1])
+
         # h[0], h[index_delete] = h[index_delete], h[0]
         h[index_delete] = float("-inf")
+        while i != 0 and h[index_parent(index_delete)] > h[index_delete]:
+            h[index_parent(index_delete)], h[index_delete] = (
+                h[index_delete],
+                h[index_parent(index_delete)],
+            )
+            # index_parent(index_delete), index_delete = index_delete, index_parent(index_delete)
+            index_delete = index_parent(index_delete)
+
         # heapq.heappop(h)
-        heapq.heapify(h)
+        # heapq.heapify(h)
         heapq.heappop(h)
         continue
     else:
