@@ -1,6 +1,11 @@
 from cgitb import small
 import heapq
 
+"""
+Solution 1 :
+
+Find the index of deleted number => gan phan tu tai vi tri do la -infinitive => day phan tu do dan len top => delete phan tu khoi top
+"""
 
 class PQEntry:
     """
@@ -24,6 +29,22 @@ def find_index_delete(h, v):
     return i
 
 
+# def find_index_delete(h, v, i=0):
+#     if h[i] == v:
+#         return i
+#     else:
+#         index_child_left = 2 * i + 1
+#         index_child_right = 2 * i + 2
+#         if index_child_left < len(h): #if parent only have left child
+#             if find_index_delete(h, v, index_child_left):
+#                 return find_index_delete(h, v, index_child_left)
+#         if index_child_right < len(h): #if parent have left and right child
+#             if find_index_delete(h, v, index_child_left):
+#                 return find_index_delete(h, v, index_child_left)
+#             else:
+#                 return find_index_delete(h, v, index_child_right)
+
+
 def index_parent(i):
     return int((i - 1) / 2)
 
@@ -41,7 +62,7 @@ for i in range(N):
     elif (
         operation[0] == 2
     ):  # Find the index of deleted number => gan phan tu tai vi tri do la -infinitive => day phan tu do dan len top => delete phan tu khoi top
-        index_delete = find_index_delete(h, operation[1])
+        index_delete = find_index_delete(h, operation[1], 0)
 
         # h[0], h[index_delete] = h[index_delete], h[0]
         h[index_delete] = float("-inf")
