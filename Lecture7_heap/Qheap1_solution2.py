@@ -4,7 +4,7 @@ import heapq
 """
 Solution 1 :
 
-Find the index of deleted number => gan phan tu tai vi tri do la -infinitive => day phan tu do dan len top => delete phan tu khoi top
+Neu phan tu bi xoa bang phan tu top heap, xoa phan tu top ra khoi heap
 """
 
 
@@ -35,7 +35,7 @@ for i in range(N):
     if operation[0] == 1:
         heapq.heappush(h, operation[1])
     elif operation[0] == 2:
-        while h[0] == operation[1]:
+        while len(h) > 0 and h[0] == operation[1]:
             heapq.heappop(h)
     else:
         out.append(h[0])
