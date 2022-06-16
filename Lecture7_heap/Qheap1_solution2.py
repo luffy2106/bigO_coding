@@ -1,6 +1,7 @@
 from cgitb import small
 import heapq
 
+
 """
 Solution 1 :
 
@@ -24,12 +25,11 @@ def index_parent(i):
     return int((i - 1) / 2)
 
 
+deleted_element = []
+
 N = int(input())
 h = []  # our heap
 out = []
-index_value = [h[i] for i in range(len(h))]
-min = 0
-delete = False
 for i in range(N):
     operation = input().split()
     operation = [int(x) for x in operation]
@@ -38,8 +38,16 @@ for i in range(N):
     elif operation[0] == 2:
         if h[0] == operation[1]:
             heapq.heappop(h)
+            while (
+                len(h) > 0 and len(deleted_element) > 0 and h[0] == deleted_element[0]
+            ):
+                heapq.heappop(deleted_element)
+                heapq.heappop(h)
+        else:
+            heapq.heappush(deleted_element, operation[1])
     elif operation[0] == 3:
-        out.append(h[0])
+        if len(h) > 0:
+            out.append(h[0])
 
 for e in out:
     print(e)
