@@ -5,7 +5,10 @@ import heapq
 """
 Solution 1 :
 
-Neu phan tu bi xoa bang phan tu top heap, xoa phan tu top ra khoi heap
+Neu phan tu bi xoa bang phan tu top heap, xoa phan tu top ra khoi heap.
+Se co kha nang la sau khi xoa xong, phan tu con cua no se leo len top.
+=> minh can luu phan tu nay trong mot heap khac va xoa, dieu nay se dam bao dc rang
+phan tu con se bi xoa la phan tu be nhat trong nhung thang con
 """
 
 
