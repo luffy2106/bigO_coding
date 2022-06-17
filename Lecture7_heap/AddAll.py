@@ -11,15 +11,18 @@ while True:
     order_num = []
     for num in numbers:
         heapq.heappush(h, num)
-    while len(h) > 0:
-        top = h[0]
-        heapq.heappop(h)
-        order_num.append(top)
-    print(order_num)
-    total = 0
-    for i in range(0, len(order_num) - 1):
-        total = total + order_num[i] + order_num[i + 1]
 
+    count = 0
+    list_sum = []
+    while len(h) > 1:
+        top_first = h[0]
+        heapq.heappop(h)
+        top_second = h[0]
+        heapq.heappop(h)
+        min_sum = top_first + top_second
+        heapq.heappush(h, min_sum)
+        list_sum.append(min_sum)
+    total = sum(list_sum)
     list_total.append(total)
 
 for total in list_total:
