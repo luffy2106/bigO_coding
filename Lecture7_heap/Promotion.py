@@ -1,5 +1,10 @@
 import heapq
 
+
+"""
+Cach lam nay khong dc tong quat, chay dc nho debug theo test case
+"""
+
 N = int(input())
 
 
