@@ -54,13 +54,16 @@ def get_check_priority_queue(pq_test, list_operation):
                 return False
     return True
 
-
+str_N = ''
 
 while True:
-    str_N = input()
-    print(str_N)
-    if not str_N:
+    try:
+        str_N = input()
+    except:
         break
+    #print(str_N)
+    # if not str_N:
+    #     break
     N = int(str_N)
     stack_test = []
     queue_test = queue.Queue()
@@ -72,14 +75,14 @@ while True:
     check_stack = get_check_stack(stack_test, list_operation)
     check_queue = get_check_queue(queue_test, list_operation)
     check_priority_queue = get_check_priority_queue(pq_test, list_operation)
-    if (check_queue and check_queue) or (check_queue and check_priority_queue) or (check_stack and check_priority_queue):
+    if (check_queue and check_stack) or (check_queue and check_priority_queue) or (check_stack and check_priority_queue):
         print("not sure")
     elif check_stack:
         print("stack")
     elif check_queue:
         print("queue")
     elif check_priority_queue:
-        print("priprity queue")
+        print("priority queue")
     else:
         print("impossible")
 
