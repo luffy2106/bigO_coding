@@ -1,6 +1,11 @@
 import heapq
 
 
+
+"""
+Do phuc tap O(Nlog(N))
+"""
+
 class Topic:
     def __init__(self, topic):
         self.id = topic[0]

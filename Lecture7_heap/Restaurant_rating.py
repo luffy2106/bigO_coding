@@ -2,6 +2,16 @@ import heapq
 import math
 N = int(input())
 
+"""
+Tao ra 2 heap
+1 heap min chua top n phan tu lon nhat
+1 heap max chua cac phan tu con lai, dc cap nhat dan
+
+neu len min heap be hon n thi pop tu heap max sang
+neu len min heap bang n thi kiem tra xem top thằng max có lớn hơn top thằng min ko, nếu có thì đổi chỗ
+
+"""
+
 
 class PQEntry_max:
     """
@@ -25,26 +35,35 @@ class PQEntry_min:
     def __lt__(self, other):
         return self.value < other.value
 
+
+min_top_heap = []
 max_heap = []
+len_reviews = 0
 for i in range(N):
     operation = [int(x) for x in input().split()]
     if operation[0] == 1:
+        len_reviews+=1
+        nb_reviews_display = math.floor(len_reviews/3)
         heapq.heappush(max_heap, PQEntry_max(operation[1]))
+        if len(min_top_heap) < nb_reviews_display:
+            top_max = max_heap[0].value
+            heapq.heappop(max_heap)
+            heapq.heappush(min_top_heap, PQEntry_min(top_max))
+        else:
+            if len(min_top_heap) > 0:
+                top_max = max_heap[0].value
+                top_max_min = min_top_heap[0].value
+                if top_max > top_max_min:
+                    heapq.heappop(max_heap)
+                    heapq.heappop(min_top_heap)
+                    heapq.heappush(max_heap, PQEntry_max(top_max_min))
+                    heapq.heappush(min_top_heap, PQEntry_min(top_max))
     elif operation[0] == 2:
-        nb_reviews_display = math.floor(len(max_heap)/3)
-        if nb_reviews_display == 0:
+        if len(min_top_heap) == 0:
             print("No reviews yet")
         else:
-            min_heap = []
-            while nb_reviews_display > 0:
-                top_max = max_heap[0].value
-                heapq.heappop(max_heap)
-                heapq.heappush(min_heap, PQEntry_min(top_max))
-                nb_reviews_display-=1
-            top_min = min_heap[0]
-            print(top_min.value)
-            for e in min_heap:
-                heapq.heappush(max_heap, PQEntry_max(e.value))
+            print(min_top_heap[0].value)
+
 
 
 

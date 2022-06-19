@@ -28,7 +28,7 @@ class PQEntry_max:
 
 class PQEntry_min:
     """
-    Use priority queue as max-heap
+    Use priority queue as min-heap
     """
 
     def __init__(self, value):
