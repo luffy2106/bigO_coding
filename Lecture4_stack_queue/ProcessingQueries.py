@@ -2,44 +2,27 @@ from http import server
 import queue
 
 
+"""
+Bai giai dua theo tutor
+Nhận xét:
+- Nếu hàng đợi chưa đầy thì kiểu gì cũng bỏ thêm query vào được và kiểu gì query bỏ thêm vào cũng được xử lý
+- Lưu mốc thời gian sau khi xử lý các query vào một hàng đợi (*).
+- Nếu một query đến vào lúc hàng đợi đang đầy => in ra -1
+- Nếu query đến có mốc thời gian lớn hơn thời gian xử lý bất kỳ query nào trước đó, pop thời gian xử lý query trước đó ra khỏi hàng đợi (*)
+"""
 
 
-def check_server_busy(current_time, ti):
-    if current_time > ti:
-        return True
-    else:
-        return False
-
-def check_queue_full(queue_test, n):
-    if queue_test.qsize() < n:
-        return False
-    else:
-        return True
-
-n = int(input())
-b = int(input())
+n, b = map(int, input().split())
 queue_test = queue.Queue()
-current_time = 0
-server_busy = False
-process_qr = []
+server_time = 0  # Thời gian xử lý query hiện tại
+
 for i in range(n):
-    [ti, di] = map(int, input().split())
-    if i == 0:
-        current_time = ti
-    if check_queue_full(queue_test, n):
-        if check_server_busy(current_time, ti):
-            process_qr.append[-1]
-        else:
-            front = queue_test.queue[0]
-            queue_test.get()
-            queue_test.put([ti,di])
-            current_time = current_time + front[1]
-            process_qr.append(current_time)
+    ti, di = map(int, input().split())
+    while queue_test.qsize() != 0 and ti >= queue_test.queue[0]:
+        queue_test.get()
+    if queue_test.qsize() <= b:
+        server_time = max(server_time, ti) + di
+        queue_test.put(server_time)
+        print(server_time, end=" ")
     else:
-        queue_test.put([ti,di])
-        if check_server_busy(current_time, ti):
-            continue
-        else:
-            queue_test.get()
-            current_time = current_time + di
-            process_qr.append(current_time)
+        print("-1", end=" ")
