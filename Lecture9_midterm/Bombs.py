@@ -18,9 +18,15 @@ class Cell:
         self.c = _c
 
 
-# def BFS(s, f):
-#     q = queue.Queue()
-#     visited
+def BFS(s, f):
+    q = queue.Queue()
+    visited[s.r][s.c] = True
+    q.put(s)
+    while not q.empty():
+        u = q.get()
+        if u.r == f.r and u.c == f.c:
+            # do something
+        for i in range
 
 for i in range(R):
     for j in range(C):
@@ -35,3 +41,8 @@ for i in range(nb_rows_bomb):
         for i in range(2, len(line_row)):
             column = line_row[i]
             matrix_road[row, column] = False
+
+
+
+
+
