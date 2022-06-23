@@ -1,8 +1,7 @@
-
-
 from ast import While
 from inspect import stack
 import queue
+
 
 class PQEntry_max:
     """
@@ -14,6 +13,7 @@ class PQEntry_max:
 
     def __lt__(self, other):
         return self.value > other.value
+
 
 def get_check_stack(stack_test, list_operation):
     for operation in list_operation:
@@ -28,6 +28,7 @@ def get_check_stack(stack_test, list_operation):
                 return False
     return True
 
+
 def get_check_queue(queue_test, list_operation):
     for operation in list_operation:
         type = int(operation[0])
@@ -40,6 +41,7 @@ def get_check_queue(queue_test, list_operation):
             else:
                 return False
     return True
+
 
 def get_check_priority_queue(pq_test, list_operation):
     for operation in list_operation:
@@ -54,14 +56,15 @@ def get_check_priority_queue(pq_test, list_operation):
                 return False
     return True
 
-str_N = ''
+
+str_N = ""
 
 while True:
     try:
         str_N = input()
     except:
         break
-    #print(str_N)
+    # print(str_N)
     # if not str_N:
     #     break
     N = int(str_N)
@@ -75,7 +78,11 @@ while True:
     check_stack = get_check_stack(stack_test, list_operation)
     check_queue = get_check_queue(queue_test, list_operation)
     check_priority_queue = get_check_priority_queue(pq_test, list_operation)
-    if (check_queue and check_stack) or (check_queue and check_priority_queue) or (check_stack and check_priority_queue):
+    if (
+        (check_queue and check_stack)
+        or (check_queue and check_priority_queue)
+        or (check_stack and check_priority_queue)
+    ):
         print("not sure")
     elif check_stack:
         print("stack")
@@ -85,8 +92,3 @@ while True:
         print("priority queue")
     else:
         print("impossible")
-
-
-
-
-

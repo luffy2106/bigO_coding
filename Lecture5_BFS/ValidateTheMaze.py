@@ -26,53 +26,92 @@ Cách 1:
 
 
 Cách 2:
+Bạn sẽ chạy BFS trên mê cung đã cho mà không cần phải chuyển lại thành dạng ma trận kề hay danh sách kề. 
+Cách này bạn phải thêm và chỉnh lại một số dòng code để chạy phù hợp.
+
+- Tìm 2 điểm đầu vào và đầu ra. 
+- Từ điểm đầu Từ điểm đầu ra bạn sẽ xác định 4 hướng đi (lên, xuống, trái, phải). 
+Nếu có đường đi, nghĩa là gặp dấu “.” và nằm trong giới hạn của mê cung thì bạn sẽ dịch chuyển bước đi của mình xuống điểm mới. 
+Lần lượt đi đến khi nào gặp đỉnh đầu ra thì dừng. Lúc này sẽ in ra là “valid”, ngược lại nếu đi mà không thấy đường ra sẽ in ra “invalid”.
+"""
 
 """
-import numpy as np
-
-M, N = map(int, input().split())  # rows and columns
-a = [[0 for j in range(N)] for i in range(M)]
-
-MAX = (M + 1) * (N + 1)
-V = MAX
-graph = [[] for i in range(MAX)]
-visited = [False] * MAX
-path = [0 for i in range(MAX)]
+Solution 2
+"""
 
 
-def BFS(s):
+class Position:
+    """
+    Position of element in matrix 2D
+    """
+
+    def __init__(self, row, column):
+        self.row = row
+        self.column = column
+
+
+def valid_move(move_i, move_j):
+    if 0 <= move_i <= M - 1 and 0 <= move_j <= N - 1:
+        return True
+    else:
+        return False
+
+
+def move_to_neighbors(position, queue_BFS):
+    for [i, j] in [[-1, 0], [0, 1], [1, 0], [0, -1]]:
+        move_i = position.row + i
+        move_j = position.column + j
+        if (
+            valid_move(move_i, move_j)
+            and a[move_i][move_j] == "."
+            and visited[move_i][move_j] == False
+        ):
+            neighbor = Position(move_i, move_j)
+            queue_BFS.put(neighbor)
+            visited[move_i][move_j] = True
+    return
+
+
+def BFS(source, dest):
     """
     Build graph BFS. s is the begin node
     """
-    for i in range(V):
-        visited[i] = False
-        path[i] = -1
-    q = Queue()
-    visited[s] = True
-    q.put(s)
-    while not q.empty():
-        u = q.get()
-        for v in graph[u]:  # loop in all neighbor of vetex u
-            if not visited[v]:
-                visited[v] = True
-                q.put(v)
-                path[v] = u
+
+    queue_BFS = Queue()
+    visited[source.row][source.column] = True
+    queue_BFS.put(source)
+    # when the dest was visited => finish
+    while not queue_BFS.empty():
+        u = queue_BFS.get()
+        if visited[dest.row][dest.column] == True:
+            return "valid"
+        move_to_neighbors(u, queue_BFS)
+    return "invalid"
 
 
-source_dest = []
-
-# find available spot
-for i in range(M):
-    row_i = [e for e in input()]
-    for j in range(len(row_i)):
-        if row_i[j] == ".":
-            a[i][j] = 1
-            str_i_j = str(i) + str(j)
-            graph[str_i_j] = []
-            visited[str_i_j] = False
-            path[str_i_j] = -1
-            if i == 3 or j == 3:
-                source_dest.append([i, j])
-
-
-print("finish")
+T = int(input())
+for i in range(T):
+    source_dest = []
+    M, N = map(int, input().split())
+    a = [["" for j in range(N)] for i in range(M)]
+    visited = [[False for j in range(N)] for i in range(M)]
+    count_sd = 0
+    # Create matrix maze with input
+    for i in range(M):
+        row_i = [e for e in input()]
+        for j in range(len(row_i)):
+            a[i][j] = row_i[j]
+            if (
+                i == 0 or i == M - 1 or j == 0 or j == N - 1
+            ):  # Position of source and dest
+                if a[i][j] == ".":
+                    count_sd += 1
+                    source_dest.append(Position(i, j))
+                    if count_sd > 2:
+                        break
+    if count_sd == 2:
+        source = source_dest[0]
+        dest = source_dest[1]
+        print(BFS(source, dest))
+    else:
+        print("invalid")
