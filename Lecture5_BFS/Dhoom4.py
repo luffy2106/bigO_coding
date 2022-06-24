@@ -1,6 +1,5 @@
-from queue import Queue
-
-from sklearn import neighbors
+from ast import Return
+import queue
 
 """
 Ex input :
@@ -8,94 +7,39 @@ Ex input :
 3
 2 5 7
 
-Bài toán có thể chuyển về thành: trong số tất cả các đường đi từ primary key đến tất các các node còn lại, nếu tìm dc đường đi nào có giá trị tính toán
-bằng lock thì dừng. 
+Nếu xem mỗi giá trị mà chìa khóa có thể nhận được là một đỉnh của đồ thị và mỗi phép nhân chìa khóa với một số bất kỳ 
+trong N số được cho tạo nên một cạnh của đồ thị thì ta có thể sử dụng giải thuật BFS cho bài toán này như sau:
+Bước 1: Xác định đỉnh xuất phát là giá trị ban đầu của chìa khóa.
+Bước 2: Xác định đỉnh đích là giá trị khóa cần đạt được.
+Bước 3: Duyệt BFS từ đỉnh xuất phát. Mỗi lần lấy ra một đỉnh u từ hàng đợi, ta thực hiện phép nhân giá trị của đỉnh đó với lần 
+lượt từng số trong N số được cho. Kết quả thu được từ phép nhân trên được mod cho 100.000 chính là một đỉnh v mới trong đồ thị. 
+Bước làm này chính là ta đang phát sinh các cạnh (u, v) có thể có của đồ thị.
 """
+
 
 
 pri_key, lock_key = map(int, input().split())
 N = int(input())
 MAX = pow(10, 5) + 1
-# visited = [False for i in range(MAX)]
-# path = [-1 for i in range(MAX)]
-
-visited_value = [Visited_value(False, -1) for i in range(MAX)]
-path_value = [Path_value(-1, -1) for i in range(MAX)]
-
 key_n = list(map(int, input().split()))
+MOD = pow(10, 5)
+dist = [-1] * MAX  #vị trí của mỗi phần tử trong mảng sẽ đại điện cho node trong đồ thị. Mỗi node đại diện cho giá trị khóa update sau phép nhân.
 
-class Path_value:
-    """
-    Position of element in matrix 2D
-    """
-    def __init__(self, path, value):
-        self.visited = path
-        self.value = value
-
-class Visited_value:
-    """
-    Position of element in matrix 2D
-    """
-    def __init__(self, visit, value):
-        self.visit = visit
-        self.value = value
-
-
-
-
-def BFS(s, key_n):
-    visited[s] = True
-    q = Queue()
-    for key in key_n:
-        q.put(key)
-    while not q.empty():
-        u = q.get()
-        for neighbor in key_n:
-            if u == neighbor:
-                continue
-            else:
-                if visited_value[neighbor].visited == False:
-                    visited_value[neighbor].visited == True
-                    visited_value[neighbor].value == (s*neighbor)%100000
-                    path_value[neighbor].path == u
-
-
-        if visited[neighbor] == False:
-            visited[neighbor] = True
-
-        for neighbor in q.queue:
-
-
-
-
-
-
+def BFS(s,f):
+    q = queue.Queue()
     q.put(s)
+    dist[s] = 0
     while not q.empty():
         u = q.get()
-        for neighbor in key_n:
-            if neighbor == u:
-                continue
-            if visited[neighbor] == False:
-                visited[neighbor] = True
-                s = (neighbor * s) % 100000
-                if s == lock_key:
-                    path[neighbor] = u
-                    print(getPathRecursion(s, neighbor, []))
-                    break
-                q.put(neighbor)
+        for key in key_n:
+            key_update = (u * key) % MOD
+            if dist[key_update] == -1:
+                dist[key_update] = dist[u] + 1
+                q.put(key_update)
+
+                if key_update == f:
+                    return dist[key_update]
+    return -1        
 
 
-def getPathRecursion(s, f, path_recursion):
-    if s == f:
-        path_recursion.append(s)
-        return len(path_recursion)
-    else:
-        if path[f] == -1:
-            return -1
-        else:
-            path_recursion.append(path[f])
-            return getPathRecursion(s, path[f], path_recursion)
-
-
-BFS(pri_key, key_n)
+print(BFS(pri_key, lock_key))
