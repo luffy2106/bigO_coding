@@ -12,29 +12,28 @@ class Edge:
         self.weight = weight
 
 
-def BellmanFord(s, q):
+def BellmanFord(s):
     dist[s] = 0
     # loop on vertice
-    for i in range(nb_nodes):
-        # loop on edges
-        if dist[q] < 3:
-            return True
-        for j in range(nb_edges):
-            u = graph[j].source
-            v = graph[j].target
-            w = graph[j].weight
+    for i in range(nb_nodes - 1):
+        for edge in graph:
+            u = edge.source
+            v = edge.target
+            w = edge.weight
             if (dist[u] != INF) and (dist[u] + w < dist[v]):
                 dist[v] = dist[u] + w
                 path[v] = u
-            if dist[q] < 3:
-                return True
-    for i in range(nb_edges):
-        u = graph[i].source
-        v = graph[i].target
-        w = graph[i].weight
-        if (dist[u] != INF) and (dist[u] + w < dist[v]):
-            return True
-    return False
+    for i in range(
+        nb_nodes
+    ):  # phải loop n lần vì khi gán 1 node nằm ở trong chu trình âm thì nó có thể kéo theo các node khác cũng nằm trong chu trình âm=> duyệt thêm n-1 lần nữa
+        for edge in graph:
+            u = edge.source
+            v = edge.target
+            w = edge.weight
+            # Nếu như tồn tại chu trình âm thì hủy kết nối các cạnh này(gán tất cả các cạnh có độ dài bằng âm vô cùng, không dán bằng dương vô cùng vì có thể trùng với các đỉnh chưa duyệt),
+            # để đảm bảo rằng các đỉnh đích cần xét nếu có nằm trong chu trình âm thì không thể đến dc.
+            if (dist[u] != INF) and (dist[u] + w < dist[v]):
+                dist[v] = -INF
 
 
 INF = 10 ** 9
@@ -43,24 +42,19 @@ for t in range(T):
     input()
     print("Case {}:".format(t + 1))
     nb_nodes = int(input())
-    busyness_nodes = list(map(int, input().split()))
+    busyness_nodes = [0] + list(map(int, input().split()))
     nb_edges = int(input())
-    MAX = nb_nodes
+    MAX = nb_nodes + 1
     dist = [INF for _ in range(MAX)]
     path = [-1 for _ in range(MAX)]
     graph = []
     for e in range(nb_edges):
         u, v = map(int, input().split())
-        u -= 1
-        v -= 1
         w = (busyness_nodes[v] - busyness_nodes[u]) ** 3
         graph.append(Edge(u, v, w))
-    s = 0
+    s = 1
+    BellmanFord(s)
     nb_q = int(input())
     for i in range(nb_q):
-        q = int(input())
-        negative_cycle = BellmanFord(s, q - 1)
-        if negative_cycle:
-            print("?")
-        else:
-            print(dist[q - 1])
+        f = int(input())
+        print(dist[f] if dist[f] != INF and dist[f] >= 3 else "?")
