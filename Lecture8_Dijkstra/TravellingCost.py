@@ -10,6 +10,10 @@ def Dijkstra(node_s):
         top = heapq.heappop(pq)
         u = top.id
         w = top.dist
+        if (dist[u] != w): 
+        #Kiểm tra xem đường đi đến u có phải là phiên bản tốt nhất không, 
+        #nếu nó bằng w thì nó là phiên bản tốt nhất rồi, tiếp tục duyệt. Còn không thì nó ko phải là phiên bản tốt nhất => bỏ qua 
+            continue
         for neighbor in graph[u]:
             if neighbor.dist + w < dist[neighbor.id]:
                 dist[neighbor.id] = neighbor.dist + w
