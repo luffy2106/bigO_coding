@@ -2,6 +2,21 @@ import queue
 import heapq
 
 
+"""
+Nhận xét :
+Giả sử trong heap hiện tại có rất nhiều cặp có chung đích u nhưng khác trọng số w. Vì priority heap sẽ xét cặp có w nhỏ nhất,
+nên khi lấy cặp u,w này ra, nếu đường đi đến u khác với w, chứng tỏ cặp đang xét không nằm trong đường đi ngắn nhất đến u => bỏ qua
+
+Ví dụ: priorityheap = [(10,2), (10,4),(10,5)]
+
+sau khi cặp u, w = (10,2) được lấy ra và xử lý. Lúc này dist[10] = 2 và đường đi ngắn nhất đến đỉnh 10 là 2. 
+Tiếp đến lấy cặp (10,4) ra để xử lý, lúc này dist[10] = 2 < 4 nên cặp (10,4) không nằm trong đường đi tối ưu => có thể bỏ
+(dist[10] = 2 < 4 hay dist[10] = 2 != 4) là như nhau vì priorityheap luôn xử lý thằng có trọng số bé nhất trước, nên nếu thằng đằng 
+sau có trọng số khác thì chắc chắn là nó có trọng số nhỏ hơn.
+
+
+"""
+
 def Dijkstra(node_s):
     pq = []
     heapq.heappush(pq, node_s)
@@ -10,7 +25,7 @@ def Dijkstra(node_s):
         top = heapq.heappop(pq)
         u = top.id
         w = top.dist
-        if (dist[u] != w): 
+        if (dist[u] != w): #1
         #Kiểm tra xem đường đi đến u có phải là phiên bản tốt nhất không, 
         #nếu nó bằng w thì nó là phiên bản tốt nhất rồi, tiếp tục duyệt. Còn không thì nó ko phải là phiên bản tốt nhất => bỏ qua 
             continue
