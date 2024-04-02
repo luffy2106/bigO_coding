@@ -12,6 +12,8 @@ DFS có thể cài đặt theo 2 cách :
 - Đệ quy
 - Không đệ quy
 
+DFS có thể giúp bạn list ra toàn bộ đường đi từ điểm A bất kỳ đến điểm B bất kỳ. 
+
 #### Solution
 
 Ý tưởng chung của thuật toán :
@@ -27,5 +29,32 @@ Xuất phát từ 1 đỉnh bất kỳ, đi tới tất cả các đỉnh kề c
 
 Kết quả sẽ cho ra đường đi từ đỉnh A bất kỳ đến đỉnh B bất kỳ dựa vào path (*)
 
+#### Note
+
+##### Input is a normal graph
+Nếu đầu vào của bài toán là đồ thị với đỉnh và cạnh, ta có thể set up graph dùng list, trong đó index của list là vertice, giá trị của element tại index đó là list các vertice hàng xóm
+```
+MAX = 1000 + 5
+visited = [False] * MAX
+dist = [0] * MAX
+graph = [[] for _ in range(MAX)]
+```
+
+##### Input is a matrix
+Nếu đầu vào của bài toán là một matrix, ta có thể set up graph bằng các cách sau:
+1. List of list 
+```
+rows, cols, k = map(int, input().split())  # rows, cols, k is rows, columns, nb_lakes
+MAX = rows * cols
+matrix_value = [["" for j in range(cols)] for i in range(rows)]
+visited = [[False for j in range(cols)] for i in range(rows)]
+graph = [[[] for j in range(cols)] for i in range(rows)]
+```
+
+2. Dictionary 
+
+
+
+3. Python object
 
 
