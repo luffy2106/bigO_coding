@@ -76,13 +76,9 @@ Sucess but there is error on this input:
 AAALL
 
 """
+
+import  copy
 T = int(input())
-# R, C = map(int, input().split())
-# rows, cols = R, C
-# matrix_value = [["" for j in range(cols)] for i in range(rows)]
-# visited = [[False for j in range(cols)] for i in range(rows)]
-# graph = [[[] for j in range(cols)] for i in range(rows)]
-# path = [[[-1,-1] for j in range(cols)] for i in range(rows)]
 standard_str = "ALLIZZWELL"
 
 def get_list_neighbor_matrix(i,j, rows, cols):
@@ -110,39 +106,69 @@ def create_graph(rows, cols):
             graph[i][j] = list_neigbor
     
     return matrix_value, graph
+
+
+def create_graph_optimized(rows, cols):
+    neighbor_offsets = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+    for i in range(rows):
+        row_value = list(input())
+        for j in range(cols):
+            matrix_value[i][j] = row_value[j]
+            list_neighbor = []
+            for offset_i, offset_j in neighbor_offsets:
+                new_i, new_j = i + offset_i, j + offset_j
+                if 0 <= new_i < rows and 0 <= new_j < cols:
+                    list_neighbor.append([new_i, new_j])
+            graph[i][j] = list_neighbor
+    return matrix_value, graph
     
-def DFS(current_location, standard_str, list_validation):
+def optimized_DFS(current_location, standard_str, visited):
     if len(standard_str) == 0:
-        list_validation.append(True)    
+        return True    
     else:
         if visited[current_location[0]][current_location[1]]== False:
-            visited[current_location[0]][current_location[1]]= True
+            visited[current_location[0]][current_location[1]] = True
             current_value = matrix_value[current_location[0]][current_location[1]]
             if current_value == standard_str[0]:
                 remain_standard_str = standard_str[1:]
                 list_neighbor_location = graph[current_location[0]][current_location[1]]
                 for neighbor_location in list_neighbor_location:
-                    DFS(neighbor_location, remain_standard_str, list_validation)
-    return list_validation
+                    if DFS(neighbor_location, remain_standard_str, visited):
+                        return True
+            visited[current_location[0]][current_location[1]] = False #instead of clone visited list, we reset the visied status of current vertices after calling recursive, it will save time cuz clone a list is expensive 
+    return False
                 
-    
 
-def find_list_path(source_value, standard_str, rows, cols):
+def DFS(current_location, standard_str, visited):
+    if len(standard_str) == 0:
+        # list_validation.append(True)
+        return True    
+    else:
+        if visited[current_location[0]][current_location[1]]== False:
+            temp_visisted = copy.deepcopy(visited) #In this case we have to clone visited graph because visit graph and tracking the string at the same timme might lead to some node is visited but not go back to the previous state while string go back to the previous state
+            temp_visisted[current_location[0]][current_location[1]]= True
+            current_value = matrix_value[current_location[0]][current_location[1]]
+            if current_value == standard_str[0]:
+                remain_standard_str = standard_str[1:]
+                list_neighbor_location = graph[current_location[0]][current_location[1]]
+                for neighbor_location in list_neighbor_location:
+                    if DFS(neighbor_location, remain_standard_str, temp_visisted):
+                        return True
+    return False
+
+
+def find_list_path(visited, source_value, standard_str, rows, cols):
     for i in range(rows):
         for j in range(cols):
             if matrix_value[i][j] == source_value:
                 source_location = [i,j]
-                list_validation = []
-                list_validation = DFS(source_location, standard_str, list_validation) 
-                if True in list_validation:
+                if optimized_DFS(source_location, standard_str, visited):
                     return True
     return False
 
 
 
 if __name__ == '__main__':
-    # matrix_value, graph = create_graph(rows, cols)
-    # print(matrix_value)
     source_value = "A"
     for i in range(T):
         R, C = map(int, input().split())
@@ -151,8 +177,9 @@ if __name__ == '__main__':
         visited = [[False for j in range(cols)] for i in range(rows)]
         graph = [[[] for j in range(cols)] for i in range(rows)]
         path = [[[-1,-1] for j in range(cols)] for i in range(rows)]
-        matrix_value, graph = create_graph(rows, cols)
-        if find_list_path(source_value, standard_str, rows, cols):
+        # matrix_value, graph = create_graph(rows, cols)
+        matrix_value, graph = create_graph_optimized(rows, cols)
+        if find_list_path(visited, source_value, standard_str, rows, cols):
             print("YES")
         else:
             print("NO")
