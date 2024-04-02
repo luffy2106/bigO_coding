@@ -51,14 +51,14 @@ def create_graph():
     return graph
 
 
-def DFS(src):
+def DFS_non_recursive(src):
     """Find all the path connected to source
 
     Args:
-        src (_type_): _description_
+        src (_type_): source vertice
 
     Returns:
-        _type_: _description_
+        path:  connected path of all node in the graph
     """
     visited[src] = True
     stack_current_visited.append(src)
@@ -71,6 +71,23 @@ def DFS(src):
                 stack_current_visited.append(neighbor) # update stack    
     return path
             
+def DFS_recursive(current_node):
+    """For each node, recurisve find all neighbor of that node.
+
+    When the recursive end ?
+    When all the neighbor of the current node is visited
+
+    Args:
+        src (_type_): _description_
+    """
+    visited[current_node] = True
+    for neighbor in graph[current_node]:
+        if visited[neighbor] == False:
+            path[neighbor] = current_node
+            DFS_recursive(neighbor)
+    return path
+    
+        
 
 def get_path(source, dest):
     route = []
@@ -90,7 +107,8 @@ if __name__ == '__main__':
     graph = create_graph()
     source = 0
     dest = 5
-    path = DFS(source)
+    # path = DFS_non_recursive(source)
+    path = DFS_recursive(source)
     route  = get_path(source,dest)
     route_from_begin = route[::-1]
     print(route_from_begin)
