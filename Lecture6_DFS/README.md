@@ -35,10 +35,16 @@ Use DFS when:
 - Need to visit all vertices in the graph/tree.
 - The main focus is to explore as far as possible along each branch before backtracking.
 - Memory usage is a concern, as DFS generally uses less memory compared to BFS.
+
 Applications:
 - Topological sorting of a directed acyclic graph.
 - Finding connected components in an undirected graph.
 - Solving puzzles like mazes or finding paths in games.
+
+Decision Factors:
+- Memory Usage: If memory is a limiting factor, consider using DFS.
+- Finding Shortest Path: If finding the shortest path is crucial, BFS is usually the better choice.
+- Exploration Strategy: DFS explores deeply before moving horizontally, while BFS explores neighbor nodes before deeper levels.
 
 
 #### Note
@@ -51,6 +57,23 @@ visited = [False] * MAX
 dist = [0] * MAX
 graph = [[] for _ in range(MAX)]
 ```
+
+##### Input is a matrix
+Nếu đầu vào của bài toán là một matrix, ta có thể set up graph bằng các cách sau:
+1. List of list 
+```
+rows, cols, k = map(int, input().split())  # rows, cols, k is rows, columns, nb_lakes
+MAX = rows * cols
+matrix_value = [["" for j in range(cols)] for i in range(rows)]
+visited = [[False for j in range(cols)] for i in range(rows)]
+graph = [[[] for j in range(cols)] for i in range(rows)]
+```
+
+2. Dictionary 
+
+
+
+3. Python object
 
 ##### Return recursive function whenever the condition satisifed
 
@@ -75,21 +98,6 @@ def DFS(current_location, standard_str, visited):
 
 Take a look to the above code, we can see that we can break the recursive to return boolean value whenever we reach to the condition.
 
-##### Input is a matrix
-Nếu đầu vào của bài toán là một matrix, ta có thể set up graph bằng các cách sau:
-1. List of list 
-```
-rows, cols, k = map(int, input().split())  # rows, cols, k is rows, columns, nb_lakes
-MAX = rows * cols
-matrix_value = [["" for j in range(cols)] for i in range(rows)]
-visited = [[False for j in range(cols)] for i in range(rows)]
-graph = [[[] for j in range(cols)] for i in range(rows)]
-```
 
-2. Dictionary 
-
-
-
-3. Python object
 
 
