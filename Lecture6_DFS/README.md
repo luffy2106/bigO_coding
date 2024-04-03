@@ -29,6 +29,18 @@ Xuất phát từ 1 đỉnh bất kỳ, đi tới tất cả các đỉnh kề c
 
 Kết quả sẽ cho ra đường đi từ đỉnh A bất kỳ đến đỉnh B bất kỳ dựa vào path (*)
 
+
+#### Application
+Use DFS when:
+- Need to visit all vertices in the graph/tree.
+- The main focus is to explore as far as possible along each branch before backtracking.
+- Memory usage is a concern, as DFS generally uses less memory compared to BFS.
+Applications:
+- Topological sorting of a directed acyclic graph.
+- Finding connected components in an undirected graph.
+- Solving puzzles like mazes or finding paths in games.
+
+
 #### Note
 
 ##### Input is a normal graph
