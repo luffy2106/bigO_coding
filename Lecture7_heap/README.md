@@ -13,13 +13,11 @@ h = heappq.heapify(a)
 
 
 # if you want to convert array to max heap
-h = heappq.heapify(a)
 class PQEntry:
     def __init__(self, value):
         self.value = value
     def __lt__(self, other):
         return self.value > other.value
-# if you want to convert array to max heap
 a  = [7,12,6,10,17,15,2,4]
 h = []
 for x in a:
