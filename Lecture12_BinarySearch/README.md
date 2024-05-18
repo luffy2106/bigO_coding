@@ -44,7 +44,6 @@ if __name__ == '__main__':
 
 #### 5. Demo
 - Binary Search : Take a look at demo/BinarySearch.py
-- 
 
 
 
